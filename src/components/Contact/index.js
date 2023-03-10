@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { validateEmail } from '../../utils/helper';
 
 function MyContactForm() {
   const [myFormState, setMyFormState] = useState({
@@ -13,34 +12,23 @@ function MyContactForm() {
   const { name, email, message } = myFormState;
 
   function handleMyChange(e) {
-    if (e.target.name === 'email') {
-      const isValid = validateEmail(e.target.value);
-  
-      if (!isValid) {
-        setMyErrorMessage('Please enter a valid email address');
-      } else {
-        setMyErrorMessage('');
-      }
+    setMyFormState({ ...myFormState, [e.target.name]: e.target.value });
+
+    if (!e.target.value.length) {
+      setMyErrorMessage(`${e.target.name} is a required field`);
     } else {
-      if (!e.target.value.length) {
-        setMyErrorMessage(`${e.target.name} is a required field`);
-      } else {
-        setMyErrorMessage('');
-      }
-    }
-  
-    if (!myErrorMessage) {
-      setMyFormState({ ...myFormState, [e.target.name]: e.target.value });
+      setMyErrorMessage('');
     }
   }
+
   function handleMySubmit(e) {
     e.preventDefault();
+   
   }
 
   return (
     <section className="justify-content-center" id="contact-section">
-      <h1 data-testid="h1tag" className="contact">
-      </h1>
+      <h1 className="contact"></h1>
       <hr />
       <form className="justify-content-center" id="contact-form">
         <div>
@@ -49,8 +37,8 @@ function MyContactForm() {
             className="form-control"
             type="text"
             name="name"
-            defaultValue={name}
-            onBlur={handleMyChange}
+            value={name}
+            onChange={handleMyChange}
           />
         </div>
         <div>
@@ -59,8 +47,8 @@ function MyContactForm() {
             className="form-control"
             type="email"
             name="email"
-            defaultValue={email}
-            onBlur={handleMyChange}
+            value={email}
+            onChange={handleMyChange}
           />
         </div>
         <div>
@@ -68,8 +56,8 @@ function MyContactForm() {
           <textarea
             className="form-control"
             name="message"
-            defaultValue={message}
-            onBlur={handleMyChange}
+            value={message}
+            onChange={handleMyChange}
             rows="7"
           />
         </div>
@@ -81,10 +69,9 @@ function MyContactForm() {
 
         <div>
           <button
-            data-testid="button"
             className="btn btn-outline-dark mt-4"
             type="submit"
-            onSubmit={handleMySubmit}
+            onClick={handleMySubmit}
           >
             Submit
           </button>
